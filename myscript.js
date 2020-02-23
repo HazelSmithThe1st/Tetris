@@ -157,7 +157,7 @@ function win_onload() {
 }
 
 function start_game(){
-    start == true
+    start = true
     document.getElementById("start_btn").style.visibility= 'hidden';
     movement()
 }
