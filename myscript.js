@@ -1,3 +1,4 @@
+
 class shape{
     name; 
     state = [];
@@ -403,10 +404,6 @@ document.addEventListener('keydown', function(event) {
     ////////shiran
   
 });
-
-
-
-
 
 
 
