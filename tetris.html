@@ -8,19 +8,29 @@
     <script  type="text/javascript" src="myscript.js"></script>
         
 </head>
-<body>
-    <p><button id="start_btn" onclick="start_game()">Click Me</button></p> 
+<body>  
+    <div style="text-align: center; ">
+        <img src="tetris-logo.jpg" style="margin:auto; margin-bottom: 20px;margin-top: 10px; box-shadow: 0px 0px 15px #fff; " height="100">       
+       
+        <div style="display: flex; flex-direction:row; justify-content: center;width: 800px;margin: auto;padding:auto;">
+            <div  style=" margin-top: 145px;margin-right: 15px; width: 200px; background-color: gray; border: 0.5px solid white; height: 130px;color: white;padding-top: 40px;font-size: 28px;">
+                SCORE:                
+                <p id="score" style="margin-top: 0px;"></p>
+            </div>
 
-    <!-- <p id="demo">A Paragraph.</p>
-    <button type="button" onclick="myFunction()">Try it</button>     -->
-    <!-- <canvas id="canvas"  width="334" height="782"></canvas>
-    <canvas id="board_canvas" width="334" height="782" style="position:fixed; left:10px; top:10px; z-index:1; "></canvas>
-    <canvas id="animated_canvas" width="334" height="782" style="position:fixed; left:10px; top:10px; z-index:3; "></canvas>
-    <canvas id="shadow_canvas" width="334" height="782" style="position:fixed; left:10px; top:10px; z-index:2; "></canvas> -->
-
-   <table id="myTable"  >
-      
-   </table>
+            <div>
+                <table id="myTable" >
+                </table>
+                <button id="start_btn" onclick="start_game()">start to play!</button>
+            </div>
+            <div style=" margin-top: 145px;margin-left: 15px;">
+                <table id="nextTable" >
+                </table>
+            </div>
+        </div>
+        
+    </div>
+   
 
 </body>
 </html>

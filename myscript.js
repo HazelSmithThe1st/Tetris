@@ -1,22 +1,30 @@
 class shape{
     name; 
     state = [];
+    next_state = []
     color;
+    points;
     row;
     coll;
     row_num;
     coll_num;
 
-    constructor(name,state , color) {
+    constructor(name,state , color, points) {
         this.name = name; 
         this.state=state;         
         this.color = color;
         this.row = 0;
         this.coll = 3;  
+        this.points = points
         this.row_num=state.length;
         this.coll_num=state[0].length;
+        // this.next_state = rotateMatrix_right()
        
     }
+    getPoints(){
+        return this.points
+    }
+
     getRow_num(){
         return this.row_num;
     }
@@ -95,18 +103,18 @@ class shape{
     }
 }
 
-var tetromino_Z =  new shape("Z", [[1,1,0],[0,1,1]], "#F00")
-var tetromino_S = new shape("S", [[0,1,1],[1,1,0]] , "#0F0")
-var tetromino_T = new shape("T", [[0,1,0],[1,1,1]], "#F0F")
-var tetromino_J = new shape("J", [[1,1,1],[0,0,1]], "#22F");
-var tetromino_L = new shape("L", [[1,1,1], [1,0,0]], "#F70")
-var tetromino_I =new shape("I", [[1,1,1,1]], "#0EE")
-var tetromino_O =new shape("O", [[1,1], [1,1]], "#FF0")
+var tetromino_Z =  new shape("Z", [[1,1,0],[0,1,1]], "#F00",15)
+var tetromino_S = new shape("S", [[0,1,1],[1,1,0]] , "#0F0",15)
+var tetromino_T = new shape("T", [[0,1,0],[1,1,1]], "#F0F", 8)
+var tetromino_J = new shape("J", [[1,1,1],[0,0,1]], "#22F",10)
+var tetromino_L = new shape("L", [[1,1,1], [1,0,0]], "#F70",10)
+var tetromino_I =new shape("I", [[1,1,1,1]], "#0EE" , 4)
+var tetromino_O =new shape("O", [[1,1], [1,1]], "#FF0", 4)
 var next_shape;
 var corrent_shape;
 var shapes = [tetromino_I,tetromino_J,tetromino_L,tetromino_O,tetromino_S,tetromino_T,tetromino_Z]
-var tableshight = 25
-var points = 0;
+var tableshight = 22
+var score = 0;
 var colors = ["#F00","#0F0","#22F","#F0F", "#FF0","#F70","#0EE"]
 //              red, green, blue, purple, yellow, orange, cyan
 //               Z,   S,     J,    T,      O,      L,      I
@@ -124,11 +132,19 @@ function createTable() {
             cell1.style.backgroundColor ="gray";
         }
     }
+    var nexttable = document.getElementById("nextTable");
+    for(var i = 0; i < 5 ;i++){
+        var row = nexttable.insertRow(0);
+        for(var j=0; j<6;j++){
+            var cell1 = row.insertCell(j);     
+            cell1.style.backgroundColor ="gray";
+        }
+    }
     // document.getElementById("myTable").rows[0].cells[0].style.backgroundColor ="red";
 
 
 }
-
+start = false
 window.onload = function () { win_onload(); }
 
 function win_onload() {
@@ -137,17 +153,18 @@ function win_onload() {
     corrent_shape = shapes[Math.floor(Math.random() * 7)]
 //   alert( document.getElementById("myTable").rows[0].cells[0].style.backgroundColor == "gray")
     set_shape_in_table(corrent_shape.getRow(),corrent_shape.getColl())
-
+    set_next_shape()
 }
 
 function start_game(){
+    start == true
     document.getElementById("start_btn").style.visibility= 'hidden';
     movement()
 }
 
 function movement() {     
    
-    var id = setInterval(frame, 1500);  // clearInterval(id)
+    var id = setInterval(frame, 1250);  // clearInterval(id)
 
     function frame() {
         var r_ = corrent_shape.getRow();
@@ -178,46 +195,46 @@ function check_down(){
     if ((corrent_shape.getRow() + corrent_shape.getRow_num() - 1) == (tableshight - 1)) {  
        return false                 
     }
-    for(var i = (corrent_shape.getRow_num() - 2); i >= 0  ; i--){
-        for(var t  = 0; t<corrent_shape.getColl_num();t++){
-            if (corrent_shape.getState_somewhere(i,t) == 1 && corrent_shape.getState_somewhere(i+1,t) == 0){
-                if(document.getElementById("myTable").rows[corrent_shape.getRow() + i+1].cells[corrent_shape.getColl()+t].style.backgroundColor != "gray"){ 
-                    return false
-                }
-            }
-        }
-    }
+    //////
+    // for(var i = (corrent_shape.getRow_num() - 2); i >= 0  ; i--){
+    //     for(var t  = 0; t<corrent_shape.getColl_num();t++){
+    //         if (corrent_shape.getState_somewhere(i,t) == 1 && corrent_shape.getState_somewhere(i+1,t) == 0){
+    //             if(document.getElementById("myTable").rows[corrent_shape.getRow() + i+1].cells[corrent_shape.getColl()+t].style.backgroundColor != "gray"){ 
+    //                 return false
+    //             }
+    //         }
+    //     }
+    // }
     return true   
 }
 
+function score_update(){
+    document.getElementById('score').innerHTML =  score;
+}
 
 function update_shape(){
-    switch (corrent_shape.getName()){
-        case "S":{
-            points += 15
-            break}
-        case "Z":{
-            points += 15
-            break}
-        case "L":{
-            points += 10
-            break}
-        case "J":{
-            points += 10
-            break}
-        case "T":{
-            points += 8
-            break}
-        case "I":{
-            points += 4
-            break}
-        case "O":{
-            points += 4
-            break}   
-    }
+    score += corrent_shape.getPoints()
+    score_update()
     corrent_shape = next_shape
     next_shape = shapes[Math.floor(Math.random() * 7)]
     set_shape_in_table(0,3)
+    set_next_shape()
+}
+
+function set_next_shape(){
+    var nexttable = document.getElementById("nextTable");
+    for(var i = 0; i < 5 ;i++){      
+        for(var j=0; j<6;j++){                
+            nexttable.rows[i].cells[j].style.backgroundColor ="gray";
+        }
+    }
+    for(var i = 0; i < next_shape.getRow_num(); i++){
+        for(var j = 0; j < next_shape.getColl_num(); j++){
+            if(next_shape.getState_somewhere(i, j) == 1){
+                document.getElementById("nextTable").rows[1 + i].cells[1+ j].style.backgroundColor = next_shape.getColor();
+            }
+        }
+    }
 }
 
 function set_shape_in_table(r_,c_){ 
@@ -340,45 +357,47 @@ function check_spin(){
 
 document.addEventListener('keydown', function(event) {
     var arrow = { left: 37, up: 38, right: 39, down: 40, space: 32};
-    
-    switch (event.keyCode) {
-        case arrow.left:{
-            if(check_left()){
-                delete_shape();
-                set_shape_in_table(corrent_shape.getRow(), corrent_shape.getColl() - 1);
+    if(start){
+        switch (event.keyCode) {
+            case arrow.left:{
+                if(check_left()){
+                    delete_shape();
+                    set_shape_in_table(corrent_shape.getRow(), corrent_shape.getColl() - 1);
+                }
+                
+                break;
             }
-            
-            break;
-        }
-        case arrow.right:{
-            if(check_right()){
-                delete_shape();
-                set_shape_in_table(corrent_shape.getRow(), corrent_shape.getColl() + 1);
+            case arrow.right:{
+                if(check_right()){
+                    delete_shape();
+                    set_shape_in_table(corrent_shape.getRow(), corrent_shape.getColl() + 1);
+                }
+                break;
             }
-            break;
-        }
-        case arrow.down:{
-            if(check_down()){            
-                delete_shape()                
-                set_shape_in_table(corrent_shape.getRow()+1,corrent_shape.getColl())
-            }else{
-                update_shape()
-            }   
-            break;
-        }
-        case arrow.space:{
-            // if(check_spin(){})
-            if((corrent_shape.getColl_num() + corrent_shape.getRow()) <= tableshight){
-                delete_shape();
-                corrent_shape.rotateMatrix_right();
-                set_shape_in_table(corrent_shape.getRow(), corrent_shape.getColl());
-            }else if((corrent_shape.getColl_num() + corrent_shape.getRow()) > tableshight){
-                delete_shape();
-                corrent_shape.rotateMatrix_right();
-                set_shape_in_table((tableshight - corrent_shape.getRow_num()), corrent_shape.getColl())
+            case arrow.down:{
+                if(check_down()){            
+                    delete_shape()                
+                    set_shape_in_table(corrent_shape.getRow()+1,corrent_shape.getColl())
+                }else{
+                    update_shape()
+                }   
+                break;
             }
-            
-            break;
+            case arrow.space:{
+                // if(check_spin(){})
+                if((corrent_shape.getColl_num() + corrent_shape.getRow()) <= tableshight){
+                    delete_shape();
+                    corrent_shape.rotateMatrix_right();
+                    set_shape_in_table(corrent_shape.getRow(), corrent_shape.getColl());
+                }else if((corrent_shape.getColl_num() + corrent_shape.getRow()) > tableshight){
+                    delete_shape();
+                    corrent_shape.rotateMatrix_right();
+                    set_shape_in_table((tableshight - corrent_shape.getRow_num()), corrent_shape.getColl())
+                }
+                ////////
+                // alert("this is for the git")
+                break;
+            }
         }
     }
   
