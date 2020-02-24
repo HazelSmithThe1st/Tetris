@@ -170,7 +170,7 @@ function start_game(){
 
 function movement() {     
    
-    var id = setInterval(frame, 1250);  // clearInterval(id)
+    var id = setInterval(frame, 1000);  // clearInterval(id)
 
     function frame() {
         var r_ = corrent_shape.getRow();
@@ -221,12 +221,8 @@ function score_update(){
 }
 
 function update_shape(){
-    var rows = check_rows()
-    score += corrent_shape.getPoints()
-    if(rows != 0){
-        score += 100 * Math.pow(rows_to_delete.length ,1.3 )
-        score = Number(score.toFixed(2))
-    }
+    check_rows()
+    score += corrent_shape.getPoints()    
     score_update()
     corrent_shape = next_shape
     next_shape = shapes[Math.floor(Math.random() * 7)]
@@ -296,7 +292,10 @@ function check_rows(){
         }
   
     }
-    return rows_to_delete.length
+    if(0 < rows_to_delete.length){
+        score += 100 * Math.pow(rows_to_delete.length ,1.3)
+        score = Number(score.toFixed(2))   
+    }
 
 }
 function check_left(){
