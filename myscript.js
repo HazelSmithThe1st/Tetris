@@ -186,7 +186,7 @@ function movement() {
 }
 
 function check_down(){
-    for(var j = 0 ; j < corrent_shape.getColl(); j++){                          
+    for(var j = 0 ; j < corrent_shape.getColl_num(); j++){                          
         if(corrent_shape.getState_somewhere(corrent_shape.getRow_num() - 1, j ) == 1){     
             if(document.getElementById("myTable").rows[corrent_shape.getRow() + corrent_shape.getRow_num()].cells[corrent_shape.getColl() + j].style.backgroundColor != "gray" ){               
                 return false
@@ -196,16 +196,17 @@ function check_down(){
     if ((corrent_shape.getRow() + corrent_shape.getRow_num() - 1) == (tableshight - 1)) {  
        return false                 
     }
-    //////
-    // for(var i = (corrent_shape.getRow_num() - 2); i >= 0  ; i--){
-    //     for(var t  = 0; t<corrent_shape.getColl_num();t++){
-    //         if (corrent_shape.getState_somewhere(i,t) == 1 && corrent_shape.getState_somewhere(i+1,t) == 0){
-    //             if(document.getElementById("myTable").rows[corrent_shape.getRow() + i+1].cells[corrent_shape.getColl()+t].style.backgroundColor != "gray"){ 
-    //                 return false
-    //             }
-    //         }
-    //     }
-    // }
+    
+    for(var i = (corrent_shape.getRow_num() - 2); i >= 0  ; i--){
+        for(var t  = 0; t<corrent_shape.getColl_num();t++){
+            if (corrent_shape.getState_somewhere(i,t) == 1 && corrent_shape.getState_somewhere(i+1,t) == 0){
+                if(document.getElementById("myTable").rows[corrent_shape.getRow() + i+1].cells[corrent_shape.getColl()+t].style.backgroundColor != "gray"){ 
+                    return false
+                }
+            }
+        }
+    }
+    
     return true   
 }
 
