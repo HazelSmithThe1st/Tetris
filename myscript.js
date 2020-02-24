@@ -269,7 +269,9 @@ function delete_shape(){
 }
 
 function check_rows(){
+   
     var rows_to_delete = []
+   
     for(var i = 0; i < corrent_shape.getRow_num() ; i++){
         var check = true;
         var j = 0
@@ -283,6 +285,7 @@ function check_rows(){
             rows_to_delete.push(i+corrent_shape.getRow())
         }       
     }
+   
     for(var t = 0 ; t < rows_to_delete.length ; t++){
         document.getElementById("myTable").deleteRow(rows_to_delete[t]) 
         var row = document.getElementById("myTable").insertRow(0);
@@ -292,16 +295,20 @@ function check_rows(){
         }
   
     }
+   
     if(0 < rows_to_delete.length){
         score += 100 * Math.pow(rows_to_delete.length ,1.3)
         score = Number(score.toFixed(2))   
     }
 
 }
+
 function check_left(){
+    
     if(corrent_shape.getColl() == 0){
         return false
     }
+
     for(var i = 0; i < corrent_shape.getRow_num() ;i++){
         if(corrent_shape.getState_somewhere(i, 0) == 1){
             if(document.getElementById("myTable").rows[i+corrent_shape.getRow()].cells[corrent_shape.getColl() - 1].style.backgroundColor != "gray"){
@@ -309,6 +316,7 @@ function check_left(){
             }
         }
     }
+
     for (var j = 1; j < corrent_shape.getColl_num(); j++){
         for (var t = 0; t < corrent_shape.getRow_num(); t++){
             if(corrent_shape.getState_somewhere(t,j) == 1 && corrent_shape.getState_somewhere(t,j - 1) == 0){
@@ -318,13 +326,16 @@ function check_left(){
             }
         }
     }
+    
     return true
 }
 
 function check_right(){
+   
     if((corrent_shape.getColl() + corrent_shape.getColl_num() - 1) == 9){
         return false
     }
+   
     for( var i = 0; i < corrent_shape.getRow_num();i++){
         if(corrent_shape.getState_somewhere(i,(corrent_shape.getColl_num() - 1)) == 1){
             if(document.getElementById("myTable").rows[i + corrent_shape.getRow()].cells[corrent_shape.getColl() + corrent_shape.getColl_num()].style.backgroundColor != "gray"){
@@ -332,6 +343,7 @@ function check_right(){
             }
         }
     }
+   
     for (var j = (corrent_shape.getColl_num()-2); j >= 0; j--){
         for (var t = 0; t < corrent_shape.getRow_num(); t++){
             if(corrent_shape.getState_somewhere(t,j) == 1 && corrent_shape.getState_somewhere(t,j + 1) == 0){
@@ -341,6 +353,7 @@ function check_right(){
             }
         }
     }
+   
     return true
 }
 
