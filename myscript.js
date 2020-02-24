@@ -2,7 +2,6 @@
 class shape{
     name; 
     state = [];
-    next_state = []
     color;
     points;
     row;
@@ -34,7 +33,8 @@ class shape{
     }
     getName(){
         return this.name;
-    }
+    } 
+
     setRow(value) {       
         this.row = value;
     }
@@ -42,6 +42,7 @@ class shape{
     getRow() {
         return this.row;
     }
+
     setColl(value) {       
         this.coll = value;
     }
@@ -49,15 +50,19 @@ class shape{
     getColl() {
         return this.coll;
     }
+
     getColor(){
         return this.color;
     }
+
     getState(){ 
         return this.state;
     }
+
     getState_somewhere(r,c){ 
         return this.state[r][c];
     }
+
     rotateMatrix_right() { 
         if(this.name != "O"){
 
@@ -80,6 +85,7 @@ class shape{
             this.coll_num = this.state[0].length;        
         }        
     }
+
     rotateMatrix_left() { 
         if(this.name != "O"){
 
@@ -152,7 +158,6 @@ function win_onload() {
     createTable()
     next_shape = shapes[Math.floor(Math.random() * 7)]
     corrent_shape = shapes[Math.floor(Math.random() * 7)]
-//   alert( document.getElementById("myTable").rows[0].cells[0].style.backgroundColor == "gray")
     set_shape_in_table(corrent_shape.getRow(),corrent_shape.getColl())
     set_next_shape()
 }
@@ -181,11 +186,14 @@ function movement() {
             }else{
                 update_shape()
             }
-        }        
+        }       
     }
 }
 
 function check_down(){
+    if ((corrent_shape.getRow() + corrent_shape.getRow_num() - 1) == (tableshight - 1)) {  
+        return false                 
+     }
     for(var j = 0 ; j < corrent_shape.getColl_num(); j++){                          
         if(corrent_shape.getState_somewhere(corrent_shape.getRow_num() - 1, j ) == 1){     
             if(document.getElementById("myTable").rows[corrent_shape.getRow() + corrent_shape.getRow_num()].cells[corrent_shape.getColl() + j].style.backgroundColor != "gray" ){               
@@ -193,9 +201,7 @@ function check_down(){
             }
         }
     } 
-    if ((corrent_shape.getRow() + corrent_shape.getRow_num() - 1) == (tableshight - 1)) {  
-       return false                 
-    }
+   
     
     for(var i = (corrent_shape.getRow_num() - 2); i >= 0  ; i--){
         for(var t  = 0; t<corrent_shape.getColl_num();t++){
@@ -215,7 +221,12 @@ function score_update(){
 }
 
 function update_shape(){
+    var rows = check_rows()
     score += corrent_shape.getPoints()
+    if(rows != 0){
+        score += 100 * Math.pow(rows_to_delete.length ,1.3 )
+        score = Number(score.toFixed(2))
+    }
     score_update()
     corrent_shape = next_shape
     next_shape = shapes[Math.floor(Math.random() * 7)]
@@ -262,23 +273,32 @@ function delete_shape(){
 }
 
 function check_rows(){
-//     var temp = 0;
-//     var row = 0;
-//     for(var i = 0; i < tableshight ; i++){
-//         var check = true;
-//         for(var j = 0 ; j < 10 ; i++){
-//             if(document.getElementById("myTable").rows[i].cells[j].style.backgroundColor == "gray"){
-//                 check = false;
-//             }
-//         }
-//         if (!check){
-//             temp += 1;
-        
-//         }
+    var rows_to_delete = []
+    for(var i = 0; i < corrent_shape.getRow_num() ; i++){
+        var check = true;
+        var j = 0
+        while(j < 10 && check == true){
+            if(document.getElementById("myTable").rows[i + corrent_shape.getRow()].cells[j].style.backgroundColor == "gray"){
+                check = false;
+            }
+            j++
+        }
+        if(check){
+            rows_to_delete.push(i+corrent_shape.getRow())
+        }       
+    }
+    for(var t = 0 ; t < rows_to_delete.length ; t++){
+        document.getElementById("myTable").deleteRow(rows_to_delete[t]) 
+        var row = document.getElementById("myTable").insertRow(0);
+        for(var j=0; j<10;j++){
+            var cell1 = row.insertCell(j);     
+            cell1.style.backgroundColor ="gray";
+        }
+  
+    }
+    return rows_to_delete.length
 
-//     }
 }
-
 function check_left(){
     if(corrent_shape.getColl() == 0){
         return false
@@ -395,15 +415,11 @@ document.addEventListener('keydown', function(event) {
                     delete_shape();
                     corrent_shape.rotateMatrix_right();
                     set_shape_in_table((tableshight - corrent_shape.getRow_num()), corrent_shape.getColl())
-                }
-                ////////
-                // alert("this is for the git")
+                }                
                 break;
             }
         }
-    }
-    ////////shiran
-  
+    } 
 });
 
 
