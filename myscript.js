@@ -207,13 +207,13 @@ function set_next_shape(){
     for (let i = 0; i < next_shape.row_num; i++){
         for (let j = 0; j < next_shape.coll_num; j++){
             if (next_shape.state[i][j] === 1){
-                nexttable.rows[1 + i].cells[1 + j].style.backgroundColor = next_shape.color
+                nexttable.rows[2 + i].cells[1 + j].style.backgroundColor = next_shape.color
             }
         }
     }
 }
 
-function set_shape_in_table(r_,c_){ 
+function set_shape_in_table(r_, c_){ 
     for (let i = 0; i < corrent_shape.row_num; i++){
         for (let j = 0; j < corrent_shape.coll_num; j++){
             if (corrent_shape.state[i][j] === 1){
@@ -322,40 +322,58 @@ function check_right(){
     return true
 }
 
-function check_spin(){
-    delete_shape()
-    corrent_shape.rotateMatrix_right()
-    if (f === 0){
-        for (let i = 0; i < corrent_shape.row_num; i++){
-            for (let j = 0; j < corrent_shape.coll_num; j++){
-                if (corrent_shape.state[i][j] === 1){
-                    if (table.rows[i + corrent_shape.row].cells[corrent_shape.coll + j] !== default_color){
-                        corrent_shape.otateMatrix_left()
-                        set_shape_in_table(corrent_shape.row,corrent_shape.coll)
-                        return false
-                    }
-                }
-            }
+function check_spin(r_, c_, name){   
+    switch(name){
+        case "Z":{
+            return spinZ(r_, c_)            
         }
-    }else if (f === 1) {
-        for (let i = 0; i < corrent_shape.row_num; i++){
-            for (let j = 0; j < corrent_shape.coll_num; j++){
-                if (corrent_shape.state[i][j] === 1){
-                    if (table.rows[i+tableshight - corrent_shape.row_num].cells[corrent_shape.coll + j] !== default_color){
-                        corrent_shape.otateMatrix_left()
-                        set_shape_in_table(corrent_shape.row,corrent_shape.coll)
-                        return false
-                    }
-                }
-            }
+        case "S":{
+            return spinS(r_, c_)            
+        }
+        case "L":{
+            return spinL(r_, c_)            
+        }
+        case "J":{
+            return spinJ(r_, c_)            
+        }
+        case "T":{
+            return spinT(r_, c_)            
+        }
+        case "I":{
+            return spinI(r_, c_)           
+        }
+        case "O":{
+            return false           
         }
     }
-    return true
-
 }
 
-document.addEventListener('keydown', function(event) {
-    
+function spinZ(r_, c_){
+    // if ( )
+    return false
+}
+
+function spinS(r_, c_){
+    return true
+}
+
+function spinL(r_, c_){
+    return true
+}
+
+function spinJ(r_, c_){
+    return true
+}
+
+function spinT(r_, c_){
+    return true
+}
+
+function spinI(r_, c_){
+    return true
+}
+
+document.addEventListener('keydown', function(event) {    
     if (start){
         switch (event.keyCode) {
             case arrow.left:{
@@ -381,17 +399,30 @@ document.addEventListener('keydown', function(event) {
                 }   
                 break
             }
-            case arrow.space:{
-                // if (check_spin(){})
+            case arrow.space:{   
+                
                 if ((corrent_shape.coll_num + corrent_shape.row) <= tableshight){
-                    delete_shape()
-                    corrent_shape.rotateMatrix_right()
-                    set_shape_in_table(corrent_shape.row, corrent_shape.coll)
-                }else if ((corrent_shape.coll_num + corrent_shape.row) > tableshight){
-                    delete_shape()
-                    corrent_shape.rotateMatrix_right()
-                    set_shape_in_table((tableshight - corrent_shape.row_num), corrent_shape.coll)
-                }                
+                    if ((corrent_shape.coll + corrent_shape.row_num) <= tableswidth){
+                        if (check_spin(corrent_shape.row, corrent_shape.coll, corrent_shape.name)){
+                            delete_shape()
+                            corrent_shape.rotateMatrix_right()
+                            set_shape_in_table(corrent_shape.row, corrent_shape.coll)
+                        }
+                    }else {
+                        if (check_spin(corrent_shape.row, (tableswidth - corrent_shape.coll_num, corrent_shape.name))){
+                            delete_shape()
+                            corrent_shape.rotateMatrix_right()
+                            set_shape_in_table(corrent_shape.row, (tableswidth - corrent_shape.coll_num))
+                        }
+                    }
+                }else { //if ((corrent_shape.coll_num + corrent_shape.row) > tableshight)
+                    if (check_spin((tableshight - corrent_shape.row_num), corrent_shape.coll, corrent_shape.name)){
+                        delete_shape()
+                        corrent_shape.rotateMatrix_right()
+                        set_shape_in_table((tableshight - corrent_shape.row_num), corrent_shape.coll)
+                    }
+                }
+                            
                 break
             }
         }
