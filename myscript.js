@@ -1,4 +1,3 @@
-
 class shape{
     name 
     state = []
@@ -35,8 +34,8 @@ class shape{
 
             for (let r = 0; r < M; r++) { 
                 for (let c = 0; c < N; c++) {
-                    ret[c][M-1-r] = this.state[r][c]
-                }
+                    ret[c][M - 1 - r] = this.state[r][c]
+                } 
             }       
             
             this.state = ret
@@ -84,6 +83,15 @@ const default_color = "gray"
 const colors = ["#F00","#0F0","#22F","#F0F", "#FF0","#F70","#0EE"]
 //              red, green, blue, purple, yellow, orange, cyan
 //               Z,   S,     J,    T,      O,      L,      I
+// include('C:\Users\u135008\Desktop\חפיפה\Tetris\shape.js')
+
+// function include(file) {   
+//     var script  = document.createElement('script')
+//     script.src  = file
+//     script.type = 'text/javascript'
+//     script.defer = true    
+//     document.getElementsByTagName('head')[0].appendChild(script)
+// }     
 
 window.onload = function () { win_onload() }
 
