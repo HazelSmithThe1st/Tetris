@@ -358,7 +358,7 @@ document.addEventListener('keydown', function(event) {
 // for (let oc = 0; oc < 5; oc++) {
 // for (let ir = 0; ir < corrent_shape.row_num; ir++)
 // for (let ic = 0; ic < corrent_shape.coll_num; ic++)
-// if (a[or + ir][oc + ic] != b[ir][ic])/////
+// if (table.rows[or + ir].cells[oc + ic] !== default_color || corrent_shape.state[ir][ic] !== 1)/////
 // continue outerCol
 // alert("Submatrix found at row " + or + ", col " + oc)
 // break outerRow
