@@ -282,7 +282,7 @@ function check_left(){
         }
     }
 
-    for (let j = 1; j < corrent_shape.coll_num; j++){
+    for (let j =  1; j < corrent_shape.coll_num; j++){
         for (let t = 0; t < corrent_shape.row_num; t++){
             if (corrent_shape.state[t][j] === 1 && corrent_shape.state[t][j - 1] === 0){
                 if (table.rows[t + corrent_shape.row].cells[corrent_shape.coll + j - 1].style.backgroundColor !== default_color){
@@ -302,7 +302,7 @@ function check_right(){
     }
    
     for ( let i = 0; i < corrent_shape.row_num; i++){
-        if (corrent_shape.state[i][corrent_shape.coll_num] === 0){
+        if (corrent_shape.state[i][corrent_shape.coll_num - 1] === 1){
             if (table.rows[i + corrent_shape.row].cells[corrent_shape.coll + corrent_shape.coll_num].style.backgroundColor !== default_color){
                 return false
             }
@@ -322,55 +322,37 @@ function check_right(){
     return true
 }
 
-function check_spin(r_, c_, name){   
-    switch(name){
-        case "Z":{
-            return spinZ(r_, c_)            
-        }
-        case "S":{
-            return spinS(r_, c_)            
-        }
-        case "L":{
-            return spinL(r_, c_)            
-        }
-        case "J":{
-            return spinJ(r_, c_)            
-        }
-        case "T":{
-            return spinT(r_, c_)            
-        }
-        case "I":{
-            return spinI(r_, c_)           
-        }
-        case "O":{
-            return false           
-        }
-    }
+function check_spin(r_, c_,){  
+       
+    // let flag = false
+    // let t = 0
+    // while (t < 3 && flag !== true){
+    //     if ((corrent_shape.row - t) < 0){
+    //         return
+    //     }
+    //     // for(let i = 0; i < corrent_shape.row_num)
+    //     flag = check_spin(corrent_shape.row - t, corrent_shape.coll)
+    //     r_ -= 1
+    // } 
+    // if (flag === true){
+    set_shape_in_table(r_, c_)
+    // } 
 }
-
-function spinZ(r_, c_){
-    // if ( )
-    return false
-}
-
-function spinS(r_, c_){
-    return true
-}
-
-function spinL(r_, c_){
-    return true
-}
-
-function spinJ(r_, c_){
-    return true
-}
-
-function spinT(r_, c_){
-    return true
-}
-
-function spinI(r_, c_){
-    return true
+function spin()
+{
+    if (corrent_shape.name == "O"){
+        return 
+    }    
+    if ((corrent_shape.coll_num + corrent_shape.row) <= tableshight){
+        if ((corrent_shape.coll + corrent_shape.row_num) <= tableswidth){                         
+            check_spin(corrent_shape.row - t, corrent_shape.coll)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+        }else {
+            check_spin(corrent_shape.row, (tableswidth - corrent_shape.coll_num))
+        }
+    }else {
+        check_spin((tableshight - corrent_shape.row_num), corrent_shape.coll)
+    }  
+    
 }
 
 document.addEventListener('keydown', function(event) {    
@@ -399,35 +381,31 @@ document.addEventListener('keydown', function(event) {
                 }   
                 break
             }
-            case arrow.space:{   
-                
-                if ((corrent_shape.coll_num + corrent_shape.row) <= tableshight){
-                    if ((corrent_shape.coll + corrent_shape.row_num) <= tableswidth){
-                        if (check_spin(corrent_shape.row, corrent_shape.coll, corrent_shape.name)){
+            case arrow.space:{ 
+                if (corrent_shape.name !== "O"){                     
+                    if ((corrent_shape.coll_num + corrent_shape.row) <= tableshight){
+                        if ((corrent_shape.coll + corrent_shape.row_num) <= tableswidth){                         
                             delete_shape()
                             corrent_shape.rotateMatrix_right()
-                            set_shape_in_table(corrent_shape.row, corrent_shape.coll)
-                        }
-                    }else {
-                        if (check_spin(corrent_shape.row, (tableswidth - corrent_shape.coll_num, corrent_shape.name))){
+                            set_shape_in_table(corrent_shape.row, corrent_shape.coll)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                        } else {
                             delete_shape()
                             corrent_shape.rotateMatrix_right()
                             set_shape_in_table(corrent_shape.row, (tableswidth - corrent_shape.coll_num))
                         }
-                    }
-                }else { //if ((corrent_shape.coll_num + corrent_shape.row) > tableshight)
-                    if (check_spin((tableshight - corrent_shape.row_num), corrent_shape.coll, corrent_shape.name)){
+                    }else {
                         delete_shape()
                         corrent_shape.rotateMatrix_right()
                         set_shape_in_table((tableshight - corrent_shape.row_num), corrent_shape.coll)
-                    }
-                }
-                            
-                break
+                    } 
+                // delete_shape()
+                // corrent_shape.rotateMatrix_right()
+                // spin()                          
+                break                               
             }
         }
     } 
-});
+}})
 
 
 
