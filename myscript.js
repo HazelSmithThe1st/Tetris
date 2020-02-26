@@ -11,9 +11,6 @@ let start = false
 let score = 0
 let shapes = []
 const default_color = "gray"
-const colors = ["#F00","#0F0","#22F","#F0F", "#FF0","#F70","#0EE"]
-//              red, green, blue, purple, yellow, orange, cyan
-//               Z,   S,     J,    T,      O,      L,      I
 // include('C:\Users\u135008\Desktop\חפיפה\Tetris\shape.js')
 
 // function include(file) {   
@@ -44,13 +41,13 @@ function createTable() {
 }
 
 function win_onload() {
-    initializ()
+    initialize()
     createTable()    
     set_shape_in_table(corrent_shape.row ,corrent_shape.coll)
     set_next_shape()
 }
 
-function initializ(){
+function initialize(){
     table = document.getElementById("myTable")
     nexttable = document.getElementById("nextTable")
     let tetromino_Z =  new shape("Z", [[1,1,0],[0,1,1]], "#F00", 15)
@@ -66,8 +63,7 @@ function initializ(){
 }
 
 function start_game(){
-    start = true
-    document.getElementById("start_btn").style.visibility= 'hidden'
+    start = true    
     movement()   
 }
 

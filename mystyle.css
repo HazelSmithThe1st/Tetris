@@ -1,4 +1,3 @@
-
 table {
     position: relative;
     border-collapse: collapse;
@@ -29,6 +28,11 @@ width: 180px;
 color: black;
 }
 
+#start_btn:hover {
+    color: white;
+    background-color: black;
+}
+
 #end_img{
     position: absolute;
     top: 500px;
@@ -37,10 +41,6 @@ color: black;
 
 }
 
-#start_btn:hover {
-     color: white;
-background-color: black;
-}
 
 td {
     border: 1px solid white;
