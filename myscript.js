@@ -11,15 +11,6 @@ let start = false
 let score = 0
 let shapes = []
 const default_color = "gray"
-// include('C:\Users\u135008\Desktop\חפיפה\Tetris\shape.js')
-
-// function include(file) {   
-//     var script  = document.createElement('script')
-//     script.src  = file
-//     script.type = 'text/javascript'
-//     script.defer = true    
-//     document.getElementsByTagName('head')[0].appendChild(script)
-// }     
 
 window.onload = function () { win_onload() }
 
@@ -41,6 +32,7 @@ function createTable() {
 }
 
 function win_onload() {
+  
     initialize()
     createTable()    
     set_shape_in_table(corrent_shape.row ,corrent_shape.coll)
@@ -68,8 +60,8 @@ function start_game(){
 }
 
 function movement() {  
-    id = setInterval(frame, 1000)  // clearInterval(id)
-    // setInterval(frame, 1000)
+    id = setleterval(frame, 1000)  // clearleterval(id)
+    // setleterval(frame, 1000)
 }
 
 function frame() {
@@ -117,7 +109,7 @@ function score_update(){
 
 function update_shape(){
     check_rows()
-    score += corrent_shape.points
+    score += corrent_shape.polets
     score_update()
     corrent_shape.row = 0
     corrent_shape.coll = 3
@@ -130,7 +122,7 @@ function update_shape(){
                     start = false
                     document.getElementById("end_img").style.visibility = 'visible'
                     nexttable.style.visibility = "hidden"
-                    clearInterval(id)
+                    clearleterval(id)
                 }
             }
         }
@@ -345,3 +337,18 @@ document.addEventListener('keydown', function(event) {
 
 
 
+// let a =[[ 2, 3, 5, 7 ],[ 5, 8, 3,5],[ 7, 6, 9, 2 ],
+// [ 3, 8, 5, 9]]
+// let b =  [[9, 2 ],[ 5, 9]]
+// outerRow:
+// for (let or = 0; or <= a.length - b.length; or++) {
+// outerCol:
+// for (let oc = 0; oc <= a[or].length - b[0].length; oc++) {
+// for (let ir = 0; ir < b.length; ir++)
+//     for (let ic = 0; ic < b[ir].length; ic++)
+//         if (a[or + ir][oc + ic] != b[ir][ic])
+//             continue outerCol
+// alert("Submatrix found at row " + or + ", col " + oc)
+// break outerRow
+// }
+// }
