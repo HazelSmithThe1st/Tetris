@@ -1,73 +1,4 @@
-class shape{
-    name 
-    state = []
-    color
-    points
-    row
-    coll
-    row_num
-    coll_num
-
-    constructor(name, state, color, points) {
-        this.name = name
-        this.state = state      
-        this.color = color
-        this.row = 0
-        this.coll = 3  
-        this.points = points
-        this.row_num = state.length
-        this.coll_num = state[0].length
-        // this.next_state = rotateMatrix_right()
-       
-    }
-
-    rotateMatrix_right() { 
-        if (this.name !== "O"){
-
-            let M = this.state.length    
-            let N = this.state[0].length
-            let ret = new Array()
-        
-            for (let i = 0; i < N; i++){
-                ret[i] = []
-            }
-
-            for (let r = 0; r < M; r++) { 
-                for (let c = 0; c < N; c++) {
-                    ret[c][M - 1 - r] = this.state[r][c]
-                } 
-            }       
-            
-            this.state = ret
-            this.row_num = this.state.length
-            this.coll_num = this.state[0].length        
-        }        
-    }
-
-    // rotateMatrix_left() { 
-    //     if (this.name !== "O"){
-
-    //         let M = this.state.length    
-    //         let N = this.state[0].length
-    //         let ret = new Array()
-        
-    //         for (let i = 0; i < N; i++){
-    //             ret[i]=[]
-    //         }
-
-    //         for (let r = 0; r < M; r++) { 
-    //             for (let c = 0; c < N; c++) {
-    //                 ret[N-c-1][r] = this.state[r][c]
-    //             }
-    //         }       
-            
-    //         this.state = ret 
-    //         this.row_num = this.state.length
-    //         this.coll_num = this.state[0].length      
-    //     }        
-    // }
-}
-
+let id
 let table
 let nexttable
 let corrent_shape
@@ -137,12 +68,12 @@ function initializ(){
 function start_game(){
     start = true
     document.getElementById("start_btn").style.visibility= 'hidden'
-    movement()
+    movement()   
 }
 
 function movement() {  
-    // let id = setInterval(frame, 1000)  // clearInterval(id)
-    setInterval(frame, 1000)
+    id = setInterval(frame, 1000)  // clearInterval(id)
+    // setInterval(frame, 1000)
 }
 
 function frame() {
@@ -192,10 +123,27 @@ function update_shape(){
     check_rows()
     score += corrent_shape.points
     score_update()
+    corrent_shape.row = 0
+    corrent_shape.coll = 3
     corrent_shape = next_shape
     next_shape = shapes[Math.floor(Math.random() * 7)]
-    set_shape_in_table(0,3)
-    set_next_shape()
+    for (let i = 0; i < corrent_shape.row_num; i++){
+        for (let j = 0; j < corrent_shape.coll_num; j++){
+            if (corrent_shape.state[i][j] === 1){
+                if (table.rows[i + corrent_shape.row].cells[j + corrent_shape.coll].style.backgroundColor !== default_color){
+                    start = false
+                    document.getElementById("end_img").style.visibility = 'visible'
+                    nexttable.style.visibility = "hidden"
+                    clearInterval(id)
+                }
+            }
+        }
+    }
+    
+    if (start){
+        set_shape_in_table(0,3)
+        set_next_shape()
+    }
 }
 
 function set_next_shape(){    
@@ -207,7 +155,7 @@ function set_next_shape(){
     for (let i = 0; i < next_shape.row_num; i++){
         for (let j = 0; j < next_shape.coll_num; j++){
             if (next_shape.state[i][j] === 1){
-                nexttable.rows[2 + i].cells[1 + j].style.backgroundColor = next_shape.color
+                nexttable.rows[1 + i].cells[1 + j].style.backgroundColor = next_shape.color
             }
         }
     }
@@ -236,7 +184,7 @@ function delete_shape(){
 }
 
 function check_rows(){
-    let rows_to_delete = []
+    let count = 0 
     for (let i = 0; i < corrent_shape.row_num; i++){
         let check = true
         let j = 0
@@ -247,25 +195,17 @@ function check_rows(){
             j++
         }
         if (check){
-            rows_to_delete.push(i+corrent_shape.row)
+            table.deleteRow(i + corrent_shape.row) 
+            let row = table.insertRow(0)
+            count += 1
+            for (let j = 0; j < 10; j++){
+                let cell1 = row.insertCell(j)     
+                cell1.style.backgroundColor = default_color
+            }
         }       
-    }
-   
-    for (let t = 0; t < rows_to_delete.length; t++){
-        table.deleteRow(rows_to_delete[t]) 
-        let row = table.insertRow(0)
-        for (let j = 0; j < 10; j++){
-            let cell1 = row.insertCell(j)     
-            cell1.style.backgroundColor = default_color
-        }
-  
-    }
-   
-    if (0 < rows_to_delete.length){
-        score += 100 * Math.pow(rows_to_delete.length ,1.3)
-        score = Number(score.toFixed(2))   
-    }
-
+    }         
+    score += 100 * Math.pow(count ,1.3)
+    score = Number(score.toFixed(2))  
 }
 
 function check_left(){
@@ -323,7 +263,7 @@ function check_right(){
 }
 
 function check_spin(r_, c_,){  
-       
+
     // let flag = false
     // let t = 0
     // while (t < 3 && flag !== true){

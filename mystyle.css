@@ -4,9 +4,8 @@ table {
     border-collapse: collapse;
     margin:auto;
     padding:auto;
-    /* margin: auto; */
-    /* border: 1px solid white; */
 }
+
 body {
     background-image: url("47945.jpg");
     /* /background-color: #cccccc; */
@@ -20,7 +19,6 @@ position: absolute;
 top :500px;
 transform: translate(-50%, -50%);
 background-color: rgb(181, 236, 243);
-color: white;
 font-size: 16px;
 padding: 12px 24px;
 border: none;
@@ -31,7 +29,15 @@ width: 180px;
 color: black;
 }
 
- #start_btn:hover {
+#end_img{
+    position: absolute;
+    top: 500px;
+    transform: translate(-50%, -50%);
+    visibility: hidden;
+
+}
+
+#start_btn:hover {
      color: white;
 background-color: black;
 }
