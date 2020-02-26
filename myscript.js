@@ -352,3 +352,19 @@ document.addEventListener('keydown', function(event) {
 // break outerRow
 // }
 // }
+// outerRow:
+// for (let or = 0; or < 5; or++) {
+// outerCol:
+// for (let oc = 0; oc < 5; oc++) {
+// for (let ir = 0; ir < corrent_shape.row_num; ir++)
+// for (let ic = 0; ic < corrent_shape.coll_num; ic++)
+// if (a[or + ir][oc + ic] != b[ir][ic])/////
+// continue outerCol
+// alert("Submatrix found at row " + or + ", col " + oc)
+// break outerRow
+// }
+// }
+
+
+
+
