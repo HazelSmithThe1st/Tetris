@@ -38,7 +38,7 @@ color: black;
     top: 500px;
     transform: translate(-50%, -50%);
     visibility: hidden;
-
+    box-shadow: 0px 0px 10px 10px #fff;
 }
 
 
