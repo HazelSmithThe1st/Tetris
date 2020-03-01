@@ -60,7 +60,7 @@ function start_game(){
 }
 
 function movement() {  
-    id = setleterval(frame, 1000)  // clearleterval(id)
+    id = setInterval(frame, 1000)  // clearleterval(id)
     // setleterval(frame, 1000)
 }
 
@@ -109,7 +109,7 @@ function score_update(){
 
 function update_shape(){
     check_rows()
-    score += corrent_shape.polets
+    score += corrent_shape.points
     score_update()
     corrent_shape.row = 0
     corrent_shape.coll = 3
@@ -282,10 +282,9 @@ function spin()
     }  
     
 }
-
-document.addEventListener('keydown', function(event) {    
+function key_pressed(event){
     if (start){
-        switch (event.keyCode) {
+        switch (event.which) {
             case arrow.left:{
                 if (check_left()){
                     delete_shape()
@@ -330,10 +329,11 @@ document.addEventListener('keydown', function(event) {
                 // corrent_shape.rotateMatrix_right()
                 // spin()                          
                 break                               
+                }
             }
-        }
-    } 
-}})
+        } 
+    }
+}
 
 
 
