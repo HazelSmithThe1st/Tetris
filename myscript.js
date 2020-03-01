@@ -10,7 +10,7 @@ const arrow = { left: 37, up: 38, right: 39, down: 40, space: 32}
 let start = false
 let score = 0
 let shapes = []
-const default_color = "gray"
+const default_color = "rgb(128, 128, 128)"
 
 window.onload = function () { win_onload() }
 
@@ -42,13 +42,13 @@ function win_onload() {
 function initialize(){
     table = document.getElementById("myTable")
     nexttable = document.getElementById("nextTable")
-    let tetromino_Z =  new shape("Z", [[1,1,0],[0,1,1]], "#F00", 15)
-    let tetromino_S = new shape("S", [[0,1,1],[1,1,0]] , "#0F0", 15)
-    let tetromino_T = new shape("T", [[0,1,0],[1,1,1]], "#F0F", 8)
-    let tetromino_J = new shape("J", [[1,1,1],[0,0,1]], "#22F", 10)
-    let tetromino_L = new shape("L", [[1,1,1],[1,0,0]], "#F70", 10)
-    let tetromino_I = new shape("I", [[1,1,1,1]], "#0EE" , 4)
-    let tetromino_O = new shape("O", [[1,1],[1,1]], "#FF0", 4)
+    let tetromino_Z =  new shape("Z", [[1,1,0],[0,1,1]], "rgb((255, 0, 0)", 15)
+    let tetromino_S = new shape("S", [[0,1,1],[1,1,0]] , "rgb(0, 255, 0)", 15)
+    let tetromino_T = new shape("T", [[0,1,0],[1,1,1]], "rgb(255, 0, 255)", 8)
+    let tetromino_J = new shape("J", [[1,1,1],[0,0,1]], "rgb(34, 34, 255)", 10)
+    let tetromino_L = new shape("L", [[1,1,1],[1,0,0]], "rgb(255, 119, 0)", 10)
+    let tetromino_I = new shape("I", [[1,1,1,1]], "rgb(0, 238, 238)" , 4)
+    let tetromino_O = new shape("O", [[1,1],[1,1]], "rgb(255, 255, 0)", 4)
     shapes = [tetromino_I, tetromino_J, tetromino_L, tetromino_O, tetromino_S, tetromino_T, tetromino_Z]
     next_shape = shapes[Math.floor(Math.random() * 7)]
     corrent_shape = shapes[Math.floor(Math.random() * 7)]
@@ -250,21 +250,63 @@ function check_right(){
     return true
 }
 
-function check_spin(r_, c_,){  
+function check_spin(){  
+    let flag = true 
+    let r_ = corrent_shape.row
+    let c_ = corrent_shape.coll
 
-    // let flag = false
-    // let t = 0
-    // while (t < 3 && flag !== true){
-    //     if ((corrent_shape.row - t) < 0){
-    //         return
-    //     }
-    //     // for(let i = 0; i < corrent_shape.row_num)
-    //     flag = check_spin(corrent_shape.row - t, corrent_shape.coll)
-    //     r_ -= 1
-    // } 
-    // if (flag === true){
-    set_shape_in_table(r_, c_)
-    // } 
+    if ((corrent_shape.coll_num + corrent_shape.row) > tableshight){
+        r_ = tableshight - corrent_shape.coll_num
+    } else {
+        if ((corrent_shape.coll + corrent_shape.row_num) > tableswidth){                              
+            c_ = tableswidth - corrent_shape.row_num
+        }        
+    } 
+    
+    let M = corrent_shape.state.length    
+    let N = corrent_shape.state[0].length
+    let ret = new Array()
+
+    for (let i = 0; i < N; i++){
+        ret[i] = []
+    }
+
+    for (let r = 0; r < M; r++) { 
+        for (let c = 0; c < N; c++) {
+            ret[c][M - 1 - r] = corrent_shape.state[r][c]
+        } 
+    }           
+    
+    let i = 0
+    while (flag && i < N){
+        let j = 0
+        while (flag && j < M){
+            if (ret[i][j] === 1){
+                if (table.rows[r_ + i].cells[c_ + j].style.backgroundColor !== default_color){
+                    if(i >= corrent_shape.row_num || j >= corrent_shape.coll_num){
+                        flag = false
+                    }
+                    if (flag){
+                        if (table.rows[r_ + i].cells[c_ + j].style.backgroundColor !== corrent_shape.color){
+                            flag = false
+                        } else {                 
+                            if (corrent_shape.state[r_ + i - corrent_shape.row][c_ + j - corrent_shape.coll] !== 1){
+                                flag = false
+                            }
+                        }
+                    }
+                }
+            }
+            j += 1
+        }
+        i += 1
+    }
+
+    if (flag){
+        delete_shape()
+        corrent_shape.rotateMatrix_right()       
+        set_shape_in_table(r_, c_)
+    } 
 }
 function spin()
 {
@@ -310,61 +352,12 @@ function key_pressed(event){
             }
             case arrow.space:{ 
                 if (corrent_shape.name !== "O"){                     
-                    if ((corrent_shape.coll_num + corrent_shape.row) <= tableshight){
-                        if ((corrent_shape.coll + corrent_shape.row_num) <= tableswidth){                         
-                            delete_shape()
-                            corrent_shape.rotateMatrix_right()
-                            set_shape_in_table(corrent_shape.row, corrent_shape.coll)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
-                        } else {
-                            delete_shape()
-                            corrent_shape.rotateMatrix_right()
-                            set_shape_in_table(corrent_shape.row, (tableswidth - corrent_shape.coll_num))
-                        }
-                    }else {
-                        delete_shape()
-                        corrent_shape.rotateMatrix_right()
-                        set_shape_in_table((tableshight - corrent_shape.row_num), corrent_shape.coll)
-                    } 
-                // delete_shape()
-                // corrent_shape.rotateMatrix_right()
-                // spin()                          
+                    check_spin()
+                    }                        
                 break                               
-                }
+                
             }
         } 
     }
 }
-
-
-
-// let a =[[ 2, 3, 5, 7 ],[ 5, 8, 3,5],[ 7, 6, 9, 2 ],
-// [ 3, 8, 5, 9]]
-// let b =  [[9, 2 ],[ 5, 9]]
-// outerRow:
-// for (let or = 0; or <= a.length - b.length; or++) {
-// outerCol:
-// for (let oc = 0; oc <= a[or].length - b[0].length; oc++) {
-// for (let ir = 0; ir < b.length; ir++)
-//     for (let ic = 0; ic < b[ir].length; ic++)
-//         if (a[or + ir][oc + ic] != b[ir][ic])
-//             continue outerCol
-// alert("Submatrix found at row " + or + ", col " + oc)
-// break outerRow
-// }
-// }
-// outerRow:
-// for (let or = 0; or < 5; or++) {
-// outerCol:
-// for (let oc = 0; oc < 5; oc++) {
-// for (let ir = 0; ir < corrent_shape.row_num; ir++)
-// for (let ic = 0; ic < corrent_shape.coll_num; ic++)
-// if (table.rows[or + ir].cells[oc + ic] !== default_color || corrent_shape.state[ir][ic] !== 1)/////
-// continue outerCol
-// alert("Submatrix found at row " + or + ", col " + oc)
-// break outerRow
-// }
-// }
-
-
-
 
