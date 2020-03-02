@@ -42,7 +42,7 @@ function win_onload() {
 function initialize(){
     table = document.getElementById("myTable")
     nexttable = document.getElementById("nextTable")
-    let tetromino_Z =  new shape("Z", [[1,1,0],[0,1,1]], "rgb((255, 0, 0)", 15)
+    let tetromino_Z =  new shape("Z", [[1,1,0],[0,1,1]], "rgb(255, 0, 0)", 15)
     let tetromino_S = new shape("S", [[0,1,1],[1,1,0]] , "rgb(0, 255, 0)", 15)
     let tetromino_T = new shape("T", [[0,1,0],[1,1,1]], "rgb(255, 0, 255)", 8)
     let tetromino_J = new shape("J", [[1,1,1],[0,0,1]], "rgb(34, 34, 255)", 10)
@@ -111,26 +111,34 @@ function update_shape(){
     check_rows()
     score += corrent_shape.points
     score_update()
+    let i = 0
     corrent_shape.row = 0
     corrent_shape.coll = 3
     corrent_shape = next_shape
     next_shape = shapes[Math.floor(Math.random() * 7)]
-    for (let i = 0; i < corrent_shape.row_num; i++){
-        for (let j = 0; j < corrent_shape.coll_num; j++){
+    while( i < corrent_shape.row_num && start){
+        let j = 0
+        while( j < corrent_shape.coll_num && start ){
             if (corrent_shape.state[i][j] === 1){
                 if (table.rows[i + corrent_shape.row].cells[j + corrent_shape.coll].style.backgroundColor !== default_color){
                     start = false
                     document.getElementById("end_img").style.visibility = 'visible'
                     nexttable.style.visibility = "hidden"
-                    clearleterval(id)
+                    clearInterval(id)
+
+                    
                 }
             }
+            j++
         }
+        i++
     }
     
     if (start){
         set_shape_in_table(0,3)
         set_next_shape()
+    }else{
+        alert("score: "+score)
     }
 }
 
@@ -262,7 +270,7 @@ function check_spin(){
             c_ = tableswidth - corrent_shape.row_num
         }        
     } 
-    
+   
     let M = corrent_shape.state.length    
     let N = corrent_shape.state[0].length
     let ret = new Array()
@@ -308,22 +316,7 @@ function check_spin(){
         set_shape_in_table(r_, c_)
     } 
 }
-function spin()
-{
-    if (corrent_shape.name == "O"){
-        return 
-    }    
-    if ((corrent_shape.coll_num + corrent_shape.row) <= tableshight){
-        if ((corrent_shape.coll + corrent_shape.row_num) <= tableswidth){                         
-            check_spin(corrent_shape.row - t, corrent_shape.coll)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
-        }else {
-            check_spin(corrent_shape.row, (tableswidth - corrent_shape.coll_num))
-        }
-    }else {
-        check_spin((tableshight - corrent_shape.row_num), corrent_shape.coll)
-    }  
-    
-}
+
 function key_pressed(event){
     if (start){
         switch (event.which) {
