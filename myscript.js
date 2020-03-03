@@ -124,9 +124,7 @@ function update_shape(){
                     start = false
                     document.getElementById("end_img").style.visibility = 'visible'
                     nexttable.style.visibility = "hidden"
-                    clearInterval(id)
-
-                    
+                                     
                 }
             }
             j++
@@ -138,7 +136,7 @@ function update_shape(){
         set_shape_in_table(0,3)
         set_next_shape()
     }else{
-        alert("score: "+score)
+        document.getElementById("score_intheend").innerHTML =  score
     }
 }
 
