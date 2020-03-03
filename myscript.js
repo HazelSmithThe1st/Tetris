@@ -42,7 +42,7 @@ function win_onload() {
 function initialize(){
     table = document.getElementById("myTable")
     nexttable = document.getElementById("nextTable")
-    let tetromino_Z =  new shape("Z", [[1,1,0],[0,1,1]], "rgb(255, 0, 0)", 15)
+    let tetromino_Z =  new shape("Z", [[1,1,0],[0,1,1]], "rgb((255, 0, 0)", 15)
     let tetromino_S = new shape("S", [[0,1,1],[1,1,0]] , "rgb(0, 255, 0)", 15)
     let tetromino_T = new shape("T", [[0,1,0],[1,1,1]], "rgb(255, 0, 255)", 8)
     let tetromino_J = new shape("J", [[1,1,1],[0,0,1]], "rgb(34, 34, 255)", 10)
@@ -116,28 +116,27 @@ function update_shape(){
     corrent_shape.coll = 3
     corrent_shape = next_shape
     next_shape = shapes[Math.floor(Math.random() * 7)]
-    while( i < corrent_shape.row_num && start){
-        let j = 0
-        while( j < corrent_shape.coll_num && start ){
-            if (corrent_shape.state[i][j] === 1){
-                if (table.rows[i + corrent_shape.row].cells[j + corrent_shape.coll].style.backgroundColor !== default_color){
-                    start = false
-                    document.getElementById("end_img").style.visibility = 'visible'
-                    nexttable.style.visibility = "hidden"
-                                     
-                }
-            }
-            j++
-        }
-        i++
-    }
+    // while( i < corrent_shape.row_num && start){
+    //     let j = 0
+    //     while( j < corrent_shape.coll_num && start ){
+    //         if (corrent_shape.state[i][j] === 1){
+    //             if (table.rows[i + corrent_shape.row].cells[j + corrent_shape.coll].style.backgroundColor !== default_color){
+    //                 start = false
+    //                 document.getElementById("end_img").style.visibility = 'visible'
+    //                 nexttable.style.visibility = "hidden"
+    //                 clearleterval(id)
+                    
+    //             }
+    //         }
+    //         j++
+    //     }
+    //     i++
+    // }
     
-    if (start){
+    // if (start){
         set_shape_in_table(0,3)
         set_next_shape()
-    }else{
-        document.getElementById("score_intheend").innerHTML =  score
-    }
+    // }
 }
 
 function set_next_shape(){    
@@ -199,7 +198,7 @@ function check_rows(){
         }       
     }         
     score += 100 * Math.pow(count ,1.3)
-    score = Number(score.toFixed(2))  
+    score = score.toFixed(2)
 }
 
 function check_left(){
@@ -261,13 +260,6 @@ function check_spin(){
     let r_ = corrent_shape.row
     let c_ = corrent_shape.coll
 
-    if ((corrent_shape.coll_num + corrent_shape.row) > tableshight){
-        r_ = tableshight - corrent_shape.coll_num
-    } else {
-        if ((corrent_shape.coll + corrent_shape.row_num) > tableswidth){                              
-            c_ = tableswidth - corrent_shape.row_num
-        }        
-    } 
    
     let M = corrent_shape.state.length    
     let N = corrent_shape.state[0].length
@@ -288,24 +280,15 @@ function check_spin(){
         let j = 0
         while (flag && j < M){
             if (ret[i][j] === 1){
-                if (table.rows[r_ + i].cells[c_ + j].style.backgroundColor !== default_color){
-                    if(i >= corrent_shape.row_num || j >= corrent_shape.coll_num){
+                if (table.rows[r_ + i].cells[c_ + j].style.backgroundColor !== default_color){                 
+                    if (table.rows[r_ + i].cells[c_ + j].style.backgroundColor !== corrent_shape.color){
                         flag = false
-                    }
-                    if (flag){
-                        if (table.rows[r_ + i].cells[c_ + j].style.backgroundColor !== corrent_shape.color){
-                            flag = false
-                        } else {                 
-                            if (corrent_shape.state[r_ + i - corrent_shape.row][c_ + j - corrent_shape.coll] !== 1){
-                                flag = false
-                            }
-                        }
                     }
                 }
             }
-            j += 1
+            j ++
         }
-        i += 1
+        i ++
     }
 
     if (flag){
